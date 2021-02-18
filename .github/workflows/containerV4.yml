@@ -1,6 +1,7 @@
 name: deploy-container
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -21,8 +22,7 @@ jobs:
       - run: npm run build
 
       - uses: shinyinc/action-aws-cli@v1.2
-      - run: aws s3 sync dist s3://$AWS_S3_BUCKET_NAME/container/latest
+        with: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/container/latest
         env:
-          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
